@@ -16,7 +16,7 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private LayerMask graveStoneLayermask;
     [SerializeField] private float raycastRange = 2f;
     [SerializeField] private Transform camera;
-    [SerializeField] private Canvas gravestoneUI;
+    [SerializeField] private GravestoneUIManager gravestoneUI;
     
     [SerializeField] private float lerpDuration = 1f;
 
@@ -37,7 +37,6 @@ public class PlayerLook : MonoBehaviour
         {
             Debug.Log("Parent of " + name + " does not contain a Character Controller.");
         }
-        gravestoneUI.enabled = false;
     }
 
     void Update()
@@ -115,6 +114,7 @@ public class PlayerLook : MonoBehaviour
         float elapsedTime = 0f;
         float smoothTime = 0.3F;
         Vector3 velocity = Vector3.zero;
+        GetComponentInParent<MeshRenderer>().enabled = false;
         
         Quaternion initRot = camera.rotation;
         
@@ -131,21 +131,25 @@ public class PlayerLook : MonoBehaviour
         camera.position = _currentlyHighlightedGravestone.observationCameraPos.position;
         camera.rotation = _currentlyHighlightedGravestone.observationCameraPos.rotation;
 
-        gravestoneUI.enabled = true;
+        gravestoneUI.Activate(_currentlyHighlightedGravestone);
+
+        Cursor.lockState = CursorLockMode.None;
     }
 
-    private void ExitGravestoneUI()
+    public void ExitGravestoneUI()
     {
         StartCoroutine(LerpToPlayerCameraPosEnum());
     }
     
     private IEnumerator LerpToPlayerCameraPosEnum()
     {
-        gravestoneUI.enabled = false;
+        gravestoneUI.Deactivate();
         
         float elapsedTime = 0f;
         float smoothTime = 0.3F;
         Vector3 velocity = Vector3.zero;
+        
+        Cursor.lockState = CursorLockMode.Locked;
         
         Quaternion initRot = camera.rotation;
         
@@ -165,5 +169,6 @@ public class PlayerLook : MonoBehaviour
         
         InputManager.instance.inputActive = true;
         _viewportCaptured = false;
+        GetComponentInParent<MeshRenderer>().enabled = true;
     }
 }
