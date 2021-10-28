@@ -29,8 +29,7 @@ public class PlayerLook : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        CaptureMouseInput();
 
         _playerBody = GetComponentInParent<CharacterController>().transform;
         if (_playerBody == null)
@@ -133,7 +132,7 @@ public class PlayerLook : MonoBehaviour
 
         gravestoneUI.Activate(_currentlyHighlightedGravestone);
 
-        Cursor.lockState = CursorLockMode.None;
+        ReleaseMouseInput();
     }
 
     public void ExitGravestoneUI()
@@ -149,7 +148,7 @@ public class PlayerLook : MonoBehaviour
         float smoothTime = 0.3F;
         Vector3 velocity = Vector3.zero;
         
-        Cursor.lockState = CursorLockMode.Locked;
+        CaptureMouseInput();
         
         Quaternion initRot = camera.rotation;
         
@@ -170,5 +169,17 @@ public class PlayerLook : MonoBehaviour
         InputManager.instance.inputActive = true;
         _viewportCaptured = false;
         GetComponentInParent<MeshRenderer>().enabled = true;
+    }
+
+    private void CaptureMouseInput()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    private void ReleaseMouseInput()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
