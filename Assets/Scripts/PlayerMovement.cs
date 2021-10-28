@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // Calculate input movement vector.
-        Vector3 moveVector = transform.right * InputManager.instance.xInput + transform.forward * InputManager.instance.zInput;
+        Vector3 moveVector = transform.right * InputManager.Instance.XInput + transform.forward * InputManager.Instance.ZInput;
 
         // Calculate physics movement.
         if (_onGround && !_charController.isGrounded)
@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
             // When on the ground, the player's vertical velocity doesn't need to increase with gravity.
             if (_physicsVector.y < 0f)
                 _physicsVector.y = -2f;
-            if (InputManager.instance.yInput >= 0.1f)
+            if (InputManager.Instance.YInput >= 0.1f)
             {
                 // Save the player's input movement so it will continue with same velocity while in air.
                 _physicsVector += moveVector * moveSpeed;

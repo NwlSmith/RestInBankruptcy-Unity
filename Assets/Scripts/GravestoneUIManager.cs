@@ -42,7 +42,7 @@ public class GravestoneUIManager : MonoBehaviour
         DisableUI(flowerUI);
         DisableUI(commentUI);
         
-        string flowerNumber = _currentGravestone.GetInfo().numFlowers.ToString();
+        string flowerNumber = _currentGravestone.GetInfo().NumFlowers.ToString();
         foreach (TMP_Text flowerNumberText in flowerNumberTexts)
         {
             flowerNumberText.text = flowerNumber;
@@ -93,7 +93,7 @@ public class GravestoneUIManager : MonoBehaviour
     public void GiveFlowerButton()
     {
         _currentGravestone.IncrementNumFlowers();
-        string newFlowerNumber = _currentGravestone.GetInfo().numFlowers.ToString();
+        string newFlowerNumber = _currentGravestone.GetInfo().NumFlowers.ToString();
         foreach (TMP_Text flowerNumberText in flowerNumberTexts)
         {
             flowerNumberText.text = newFlowerNumber;

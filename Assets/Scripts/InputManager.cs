@@ -9,25 +9,25 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
     // Static instance of the object.
-    public static InputManager instance = null;
+    public static InputManager Instance = null;
 
     public bool inputActive = true;
     
-    public float xInput { get; private set; } = 0f;
-    public float yInput { get; private set; } = 0f;
-    public float zInput { get; private set; } = 0f;
-    public bool sprint { get; private set; } = false;
-    public float mouseX { get; private set; } = 0f;
-    public float mouseY { get; private set; } = 0f;
-    public bool mouseClick { get; private set; } = false;
-    public bool escape { get; private set; } = false;
+    public float XInput { get; private set; } = 0f;
+    public float YInput { get; private set; } = 0f;
+    public float ZInput { get; private set; } = 0f;
+    public bool Sprint { get; private set; } = false;
+    public float MouseX { get; private set; } = 0f;
+    public float MouseY { get; private set; } = 0f;
+    public bool MouseClick { get; private set; } = false;
+    public bool Escape { get; private set; } = false;
     
     private void Awake()
     {
         // Ensure that there is only one instance of the InputManager.
-        if (instance == null)
-            instance = this;
-        else if (instance != this)
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
             Destroy(gameObject);
     }
 
@@ -42,30 +42,30 @@ public class InputManager : MonoBehaviour
             ZeroInputs();
         }
 
-        escape = Input.GetButtonDown("Cancel");
+        Escape = Input.GetButtonDown("Cancel");
     }
 
     private void DetectInputs()
     {
-        xInput = Input.GetAxis("Horizontal");
-        zInput = Input.GetAxis("Vertical");
-        yInput = Input.GetAxis("Jump");
-        sprint = Input.GetButton("Sprint");
+        XInput = Input.GetAxis("Horizontal");
+        ZInput = Input.GetAxis("Vertical");
+        YInput = Input.GetAxis("Jump");
+        Sprint = Input.GetButton("Sprint");
 
-        mouseX = Input.GetAxis("Mouse X");
-        mouseY = Input.GetAxis("Mouse Y");
-        mouseClick = Input.GetButtonDown("Fire1");
+        MouseX = Input.GetAxis("Mouse X");
+        MouseY = Input.GetAxis("Mouse Y");
+        MouseClick = Input.GetButtonDown("Fire1");
     }
 
     private void ZeroInputs()
     {
-        xInput = 0;
-        zInput = 0;
-        yInput = 0;
-        sprint = false;
+        XInput = 0;
+        ZInput = 0;
+        YInput = 0;
+        Sprint = false;
 
-        mouseX = 0;
-        mouseY = 0;
-        mouseClick = false;
+        MouseX = 0;
+        MouseY = 0;
+        MouseClick = false;
     }
 }

@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 892a57c2454281e49affb33a504fe551
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - tempObjectToSpawn: {fileID: 2833989344264988287, guid: cabac302c3e5ea74bb8a9c052f54d75a, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

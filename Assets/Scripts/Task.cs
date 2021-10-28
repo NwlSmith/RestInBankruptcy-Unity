@@ -100,15 +100,15 @@ public class DelegateTask : Task
 	public delegate void SuccessHandler();
 	public delegate void FailureHandler();
 
-	private InitializationHandler initialize;
-	private UpdateHandler update;
-	private SuccessHandler onSuccess;
-	private FailureHandler onFailure;
+	private InitializationHandler _initialize;
+	private UpdateHandler _update;
+	private SuccessHandler _onSuccess;
+	private FailureHandler _onFailure;
 
 	public DelegateTask(InitializationHandler initialize, UpdateHandler update = null, SuccessHandler onSuccess = null, FailureHandler onFailure = null)
 	{
-		this.initialize = initialize;
-		this.update = update ?? (() => true);
+		this._initialize = initialize;
+		this._update = update ?? (() => true);
         /*
 		if (update != null)
 			this.update = update;
@@ -131,18 +131,18 @@ public class DelegateTask : Task
 			this.update = UpdateMethod;
 		}*/
 
-		this.onSuccess = onSuccess;
-		this.onFailure = onFailure;
+		this._onSuccess = onSuccess;
+		this._onFailure = onFailure;
 	}
 
 	protected override void Initialize()
 	{
-		initialize();
+		_initialize();
 	}
 
 	internal override void Update()
 	{
-		var finished = update();
+		var finished = _update();
 		
 		if (finished) 
 			SetStatus(TaskStatus.Success);
@@ -150,7 +150,7 @@ public class DelegateTask : Task
 
 	protected override void OnSuccess()
 	{
-		onSuccess?.Invoke();
+		_onSuccess?.Invoke();
 		
 		/*
 		 * if (onSuccess != null)
@@ -161,7 +161,7 @@ public class DelegateTask : Task
 
 	protected override void OnFail()
 	{
-		onFailure?.Invoke();
+		_onFailure?.Invoke();
 	}
 }
 

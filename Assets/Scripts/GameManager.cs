@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 /*
  * Date created: 10/26/2021
  * Creator: Nate Smith
@@ -12,7 +14,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     // Static instance of the object.
-    public static GameManager instance = null;
+    public static GameManager Instance = null;
 
     // Public Variables.
     public bool debug = false;
@@ -20,9 +22,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         // Ensure that there is only one instance of the GameManager.
-        if (instance == null)
-            instance = this;
-        else if (instance != this)
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
             Destroy(gameObject);
     }
 }

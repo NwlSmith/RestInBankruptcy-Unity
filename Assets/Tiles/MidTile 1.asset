@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 892a57c2454281e49affb33a504fe551, type: 3}
+  m_Name: MidTile 1
+  m_EditorClassIdentifier: 
+  tempObjectToSpawn: {fileID: 6830021113390997683, guid: 3bb308f93b9e38245bdcc392ce035b15, type: 3}

@@ -43,7 +43,7 @@ public class PlayerLook : MonoBehaviour
         ResolveMouseMovement();
         ResolveMousePointing();
 
-        if (_viewportCaptured && InputManager.instance.escape)
+        if (_viewportCaptured && InputManager.Instance.Escape)
         {
             ExitGravestoneUI();
         }
@@ -52,8 +52,8 @@ public class PlayerLook : MonoBehaviour
     private void ResolveMouseMovement()
     {
         // Retrieve mouse input.
-        float mouseX = InputManager.instance.mouseX * mouseSensitivity * Time.deltaTime;
-        float mouseY = InputManager.instance.mouseY * mouseSensitivity * Time.deltaTime;
+        float mouseX = InputManager.Instance.MouseX * mouseSensitivity * Time.deltaTime;
+        float mouseY = InputManager.Instance.MouseY * mouseSensitivity * Time.deltaTime;
 
         // Move camera vertically.
         _xRot -= mouseY;
@@ -85,7 +85,7 @@ public class PlayerLook : MonoBehaviour
             }
 
             // clicked
-            if (InputManager.instance.mouseClick)
+            if (InputManager.Instance.MouseClick)
             {
                 ZoomIntoGravestoneUI();
             }
@@ -107,7 +107,7 @@ public class PlayerLook : MonoBehaviour
 
     private IEnumerator LerpToGravestonePosEnum()
     {
-        InputManager.instance.inputActive = false;
+        InputManager.Instance.inputActive = false;
         _viewportCaptured = true;
         
         float elapsedTime = 0f;
@@ -166,7 +166,7 @@ public class PlayerLook : MonoBehaviour
         camera.rotation = transform.rotation;
         
         
-        InputManager.instance.inputActive = true;
+        InputManager.Instance.inputActive = true;
         _viewportCaptured = false;
         GetComponentInParent<MeshRenderer>().enabled = true;
     }

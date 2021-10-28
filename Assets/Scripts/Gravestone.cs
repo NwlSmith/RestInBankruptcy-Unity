@@ -6,11 +6,20 @@ using UnityEngine;
 
 public class GravestoneInfo
 {
-    public string id = "0";
-    public string name = "test name";
-    public DateTime startTime;
-    public DateTime endTime;
-    public int numFlowers = 0;
+    public string ID = "0";
+    public string Name = "test name";
+    public DateTime StartTime;
+    public DateTime EndTime;
+    public int NumFlowers = 0;
+
+    public void FromGravestoneData(LevelLoader.GravestoneData data)
+    {
+        ID = data.id;
+        Name = data.name;
+        StartTime = new DateTime(data.startTime, 1, 1);
+        EndTime = new DateTime(data.endTime, 1, 1);
+        NumFlowers = data.numFlowers;
+    }
 }
 
 public class Gravestone : MonoBehaviour
@@ -30,17 +39,29 @@ public class Gravestone : MonoBehaviour
 
     public void SetupGravestone(string idString, string nameString, DateTime startTime, DateTime endTime, int numFlowers)
     {
-        id = idString;
-        nameText.text = nameString;
-        string lifetimeString = $"{startTime.Year} - {endTime.Year}";
-        lifetimeText.text = lifetimeString;
-
         _gravestoneInfo = new GravestoneInfo();
-        _gravestoneInfo.id = idString;
-        _gravestoneInfo.name = nameString;
-        _gravestoneInfo.startTime = startTime;
-        _gravestoneInfo.endTime = endTime;
-        _gravestoneInfo.numFlowers = numFlowers;
+        _gravestoneInfo.ID = idString;
+        _gravestoneInfo.Name = nameString;
+        _gravestoneInfo.StartTime = startTime;
+        _gravestoneInfo.EndTime = endTime;
+        _gravestoneInfo.NumFlowers = numFlowers;
+        
+        SetupGravestoneUI();
+    }
+    
+    public void SetupGravestone(LevelLoader.GravestoneData gravestoneData)
+    {
+        _gravestoneInfo = new GravestoneInfo();
+        _gravestoneInfo.FromGravestoneData(gravestoneData);
+        SetupGravestoneUI();
+    }
+
+    private void SetupGravestoneUI()
+    {
+        id = _gravestoneInfo.ID;
+        nameText.text = _gravestoneInfo.Name;
+        string lifetimeString = $"{_gravestoneInfo.StartTime.Year} - {_gravestoneInfo.EndTime.Year}";
+        lifetimeText.text = lifetimeString;
     }
 
     public GravestoneInfo GetInfo()
@@ -50,7 +71,7 @@ public class Gravestone : MonoBehaviour
 
     public void IncrementNumFlowers()
     {
-        _gravestoneInfo.numFlowers++;
+        _gravestoneInfo.NumFlowers++;
     }
 
     public void StartHighlighting()
