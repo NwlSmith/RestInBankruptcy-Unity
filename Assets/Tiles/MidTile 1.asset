@@ -13,3 +13,33 @@ MonoBehaviour:
   m_Name: MidTile 1
   m_EditorClassIdentifier: 
   tempObjectToSpawn: {fileID: 6830021113390997683, guid: 3bb308f93b9e38245bdcc392ce035b15, type: 3}
+  objectsRow0:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  objectsRow1:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  objectsRow2:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 6830021113390997683, guid: 3bb308f93b9e38245bdcc392ce035b15, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  objectsRow3:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  objectsRow4:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

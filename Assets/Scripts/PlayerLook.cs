@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
+
 /*
  * Date created: 10/26/2021
  * Creator: Nate Smith
@@ -15,7 +17,7 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private float mouseSensitivity = 100f;
     [SerializeField] private LayerMask graveStoneLayermask;
     [SerializeField] private float raycastRange = 2f;
-    [SerializeField] private Transform camera;
+    [FormerlySerializedAs("camera")] [SerializeField] private Transform playerCamera;
     [SerializeField] private GravestoneUIManager gravestoneUI;
     
     [SerializeField] private float lerpDuration = 1f;
@@ -115,20 +117,20 @@ public class PlayerLook : MonoBehaviour
         Vector3 velocity = Vector3.zero;
         GetComponentInParent<MeshRenderer>().enabled = false;
         
-        Quaternion initRot = camera.rotation;
+        Quaternion initRot = playerCamera.rotation;
         
         while (elapsedTime < lerpDuration)
         {
             elapsedTime += Time.deltaTime;
 
-            camera.position = Vector3.SmoothDamp(camera.position, _currentlyHighlightedGravestone.observationCameraPos.position, ref velocity, smoothTime);
-            camera.rotation = Quaternion.Slerp(initRot, _currentlyHighlightedGravestone.observationCameraPos.rotation,
+            playerCamera.position = Vector3.SmoothDamp(playerCamera.position, _currentlyHighlightedGravestone.observationCameraPos.position, ref velocity, smoothTime);
+            playerCamera.rotation = Quaternion.Slerp(initRot, _currentlyHighlightedGravestone.observationCameraPos.rotation,
                     elapsedTime / lerpDuration);
             yield return null;
         }
 
-        camera.position = _currentlyHighlightedGravestone.observationCameraPos.position;
-        camera.rotation = _currentlyHighlightedGravestone.observationCameraPos.rotation;
+        playerCamera.position = _currentlyHighlightedGravestone.observationCameraPos.position;
+        playerCamera.rotation = _currentlyHighlightedGravestone.observationCameraPos.rotation;
 
         gravestoneUI.Activate(_currentlyHighlightedGravestone);
 
@@ -150,20 +152,20 @@ public class PlayerLook : MonoBehaviour
         
         CaptureMouseInput();
         
-        Quaternion initRot = camera.rotation;
+        Quaternion initRot = playerCamera.rotation;
         
         while (elapsedTime < lerpDuration)
         {
             elapsedTime += Time.deltaTime;
 
-            camera.position = Vector3.SmoothDamp(camera.position, transform.position, ref velocity, smoothTime);
-            camera.rotation = Quaternion.Slerp(initRot, transform.rotation,
+            playerCamera.position = Vector3.SmoothDamp(playerCamera.position, transform.position, ref velocity, smoothTime);
+            playerCamera.rotation = Quaternion.Slerp(initRot, transform.rotation,
                 elapsedTime / lerpDuration);
             yield return null;
         }
 
-        camera.position = transform.position;
-        camera.rotation = transform.rotation;
+        playerCamera.position = transform.position;
+        playerCamera.rotation = transform.rotation;
         
         
         InputManager.Instance.inputActive = true;

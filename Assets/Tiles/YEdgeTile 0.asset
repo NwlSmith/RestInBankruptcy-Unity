@@ -12,4 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892a57c2454281e49affb33a504fe551, type: 3}
   m_Name: YEdgeTile 0
   m_EditorClassIdentifier: 
-  tempObjectToSpawn: {fileID: 1729112071557364, guid: 781496165a532cf48b27a3f0bfc2d01b, type: 3}
+  tempObjectToSpawn: {fileID: 1677184535685980, guid: 9cc8c81c421800c47866102d2652cd42, type: 3}
+  objectsRow0:
+  - {fileID: 1086864931142978, guid: e3c91a7a29939f143a323a467fc83401, type: 3}
+  - {fileID: 1467411092033158, guid: 0da27b2fc008b0445a74f186891d1bc7, type: 3}
+  - {fileID: 1086864931142978, guid: e3c91a7a29939f143a323a467fc83401, type: 3}
+  - {fileID: 1467411092033158, guid: 0da27b2fc008b0445a74f186891d1bc7, type: 3}
+  - {fileID: 1086864931142978, guid: e3c91a7a29939f143a323a467fc83401, type: 3}
+  objectsRow1:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  objectsRow2:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  objectsRow3:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  objectsRow4:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
