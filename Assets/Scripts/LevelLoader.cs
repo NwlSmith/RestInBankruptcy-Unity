@@ -26,7 +26,7 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] private TMP_Text progressText;
     [SerializeField] private Slider progressSlider;
 
-    private string databaseURL = "http://3.21.207.180:8080/govinfo/dummydata";
+    private string databaseURL = "http://18.220.179.6:8080/govinfo/dummydata";
     
     [System.Serializable]
     public class GravestoneData
@@ -104,7 +104,7 @@ public class LevelLoader : MonoBehaviour
         }
         
         // REMOVE THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        webRequestResponse = GetDummyDataFromFile();
+        //webRequestResponse = GetDummyDataFromFile();
 
         /* --- Get data from JSON --- */
         
