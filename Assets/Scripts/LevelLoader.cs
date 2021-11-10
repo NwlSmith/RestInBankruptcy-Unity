@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO; // REMOVE ME
+using System.IO;
+using System.Linq;
+using Newtonsoft.Json.Linq; // REMOVE ME
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -27,6 +29,7 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] private Slider progressSlider;
 
     private string databaseURL = "http://18.220.179.6:8080/govinfo/dummydata";
+    private string databaseServerURL = "http://18.220.179.6:8080/dynamoDB/docs/RestInDatabase/courtState/New%20York";
     
     [System.Serializable]
     public class GravestoneData
@@ -50,6 +53,11 @@ public class LevelLoader : MonoBehaviour
     public void OnPressStart()
     {
         StartCoroutine(LoadScene());
+    }
+
+    public void OnPressStartServer()
+    {
+        StartCoroutine(LoadSceneServerData());
     }
 
     private IEnumerator LoadScene()
@@ -84,6 +92,105 @@ public class LevelLoader : MonoBehaviour
         progressSlider.value = 1f / 4f;
         
         UnityWebRequest webRequest = UnityWebRequest.Get(databaseURL);
+        // Request and wait for the desired page.
+        yield return webRequest.SendWebRequest();
+
+        string webRequestResponse = "";
+
+        if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
+            webRequest.result == UnityWebRequest.Result.ProtocolError ||
+            webRequest.result == UnityWebRequest.Result.DataProcessingError) {
+            progressText.text = "Error: " + webRequest.error;
+            progressSlider.value = 0f;
+            yield return new WaitForSeconds(200f);
+        }
+        else {
+            webRequestResponse = webRequest.downloadHandler.text;
+            string startOfResponse = "{\"Items\":";
+            webRequestResponse = startOfResponse + webRequestResponse + "}";
+            Debug.Log(webRequestResponse);
+            
+            progressSlider.value = 2f / 4f;
+        }
+        
+        // REMOVE THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //webRequestResponse = GetDummyDataFromFile();
+
+        /* --- Get data from JSON --- */
+        
+        progressText.text = "Parsing data...";
+        GravestoneData[] parsedDataArray = DeserializeJsonDummy(webRequestResponse);
+        progressSlider.value = 3f / 5f;
+
+        /* --- Construct scene --- */
+        
+        progressText.text = "Constructing graveyard...";
+
+        Gravestone[] gravestones = FindObjectsOfType<Gravestone>();
+
+        int numAssignedGravestones;
+        for (numAssignedGravestones = 0; numAssignedGravestones < gravestones.Length && numAssignedGravestones < parsedDataArray.Length; numAssignedGravestones++)
+        {
+            gravestones[numAssignedGravestones].SetupGravestone(parsedDataArray[numAssignedGravestones]);
+            progressSlider.value = (3f + numAssignedGravestones / gravestones.Length) / 4f;
+        }
+
+        if (numAssignedGravestones < gravestones.Length)
+        {
+            // get rid of extra gravestones
+            for (; numAssignedGravestones < gravestones.Length; numAssignedGravestones++)
+            {
+                Debug.LogError($"Num gravestones in scene: {gravestones.Length}. Num gravestone data recieved: {parsedDataArray.Length}. Too many gravestones.");
+                gravestones[numAssignedGravestones].gameObject.SetActive(false);
+            }
+        }
+        else if (numAssignedGravestones < parsedDataArray.Length)
+        {
+            Debug.LogError($"Num gravestones in scene: {gravestones.Length}. Num gravestone data recieved: {parsedDataArray.Length}. Too few gravestones.");
+        }
+        progressSlider.value = 1;
+
+        /* --- Cleanup --- */
+        
+        canvas.enabled = false;
+        overlay.enabled = false;
+        Destroy(gameObject);
+        InputManager.Instance.inputActive = true;
+    }
+    
+    
+    private IEnumerator LoadSceneServerData()
+    {
+        /* --- Startup --- */
+        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(canvas);
+
+        canvas.enabled = true;
+        startButton.enabled = false;
+        progressText.enabled = true;
+        progressSlider.gameObject.SetActive(true);
+        
+        /* --- Load scene --- */
+        AsyncOperation loading = SceneManager.LoadSceneAsync(sceneToLoad);
+
+        progressText.text = "Loading scene...";
+
+        while (!loading.isDone)
+        {
+            float prog = Mathf.Clamp01(loading.progress / .9f);
+            progressSlider.value = prog / 4f;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(.1f);
+
+        InputManager.Instance.inputActive = false;
+
+        /* --- Get data from server --- */
+        progressText.text = "Retrieving data from server...";
+        progressSlider.value = 1f / 4f;
+        
+        UnityWebRequest webRequest = UnityWebRequest.Get(databaseServerURL);
         // Request and wait for the desired page.
         yield return webRequest.SendWebRequest();
 
@@ -234,9 +341,38 @@ public class LevelLoader : MonoBehaviour
         return fileContents;
     }
     
-    private GravestoneData[] DeserializeJson(string jsonData)
+    private GravestoneData[] DeserializeJsonDummy(string jsonData)
     {
         GravestoneData[] dataArray = Utilities.JsonHelper.FromJson<GravestoneData>(jsonData);
+        foreach (GravestoneData data in dataArray)
+        {
+            Debug.Log($"deserialized {data.name}");
+        }
+        return dataArray;
+    }
+    
+    private GravestoneData[] DeserializeJson(string jsonData)
+    {
+        JArray jsonDataArray = JArray.Parse(jsonData);
+        
+        GravestoneData[] dataArray = new GravestoneData[jsonDataArray.Count];
+
+        for (int i = 0; i < jsonDataArray.Count; i++)
+        {
+            JObject jsonObject = jsonDataArray.Value<JObject>(i);
+
+            if (i == 0)
+            {
+                Debug.Log(jsonObject.ToString());
+            }
+            GravestoneData gravestoneData = new GravestoneData();
+            gravestoneData.name = jsonObject.GetValue("title").ToString();
+            gravestoneData.startTime = int.Parse(jsonObject.GetValue("lastModified").ToString().Substring(6, 4)); // temp value
+            gravestoneData.endTime = int.Parse(jsonObject.GetValue("dateIssued").ToString().Substring(0, 4));
+            dataArray[i] = gravestoneData;
+            Debug.Log($"gravestone data title = {gravestoneData.name}, date = {gravestoneData.startTime}");
+        }
+
         foreach (GravestoneData data in dataArray)
         {
             Debug.Log($"deserialized {data.name}");

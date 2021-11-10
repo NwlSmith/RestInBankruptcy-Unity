@@ -17,6 +17,8 @@ public class GravestoneInfo
         ID = data.id;
         Name = data.name;
         StartTime = new DateTime(data.startTime, 1, 1);
+        if (data.endTime == 0)
+            data.endTime = 1;
         EndTime = new DateTime(data.endTime, 1, 1);
         NumFlowers = data.numFlowers;
     }
