@@ -109,6 +109,8 @@ public class PlayerLook : MonoBehaviour
 
     private IEnumerator LerpToGravestonePosEnum()
     {
+        gravestoneUI.RequestGravestoneData(_currentlyHighlightedGravestone.GetInfo().ID, _currentlyHighlightedGravestone);
+        
         InputManager.Instance.inputActive = false;
         _viewportCaptured = true;
         
@@ -131,6 +133,11 @@ public class PlayerLook : MonoBehaviour
 
         playerCamera.position = _currentlyHighlightedGravestone.observationCameraPos.position;
         playerCamera.rotation = _currentlyHighlightedGravestone.observationCameraPos.rotation;
+
+        while (!gravestoneUI.readyToShowUI)
+        {
+            yield return null;
+        }
 
         gravestoneUI.Activate(_currentlyHighlightedGravestone);
 

@@ -93,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4493180963141026313, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_fontSize
-      value: 1
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 4493180963141026313, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_margin.w
@@ -109,7 +109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4493180963141026313, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_enableAutoSizing
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5109374156832190739, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_RootOrder

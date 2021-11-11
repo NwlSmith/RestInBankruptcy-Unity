@@ -76,6 +76,11 @@ public class Gravestone : MonoBehaviour
         _gravestoneInfo.NumFlowers++;
     }
 
+    public void SetNumFlowers(int newNumber)
+    {
+        _gravestoneInfo.NumFlowers = newNumber;
+    }
+
     public void StartHighlighting()
     {
         Debug.Log($"Highlighting gravestone of id {id}");

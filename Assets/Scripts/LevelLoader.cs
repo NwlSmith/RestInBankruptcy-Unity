@@ -366,6 +366,7 @@ public class LevelLoader : MonoBehaviour
                 Debug.Log(jsonObject.ToString());
             }
             GravestoneData gravestoneData = new GravestoneData();
+            gravestoneData.id = jsonObject.GetValue("packageId").ToString();
             gravestoneData.name = jsonObject.GetValue("title").ToString();
             gravestoneData.startTime = int.Parse(jsonObject.GetValue("lastModified").ToString().Substring(6, 4)); // temp value
             gravestoneData.endTime = int.Parse(jsonObject.GetValue("dateIssued").ToString().Substring(0, 4));
