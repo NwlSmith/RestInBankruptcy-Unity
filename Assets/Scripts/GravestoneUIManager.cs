@@ -56,7 +56,7 @@ public class GravestoneUIManager : MonoBehaviour
         _canvas.enabled = false;
         _playerLook = FindObjectOfType<PlayerLook>();
         
-        AddComment("Testing");
+        AddComment("Lorem Ipsem dolor.");
     }
 
     public void Activate(Gravestone gravestone)
@@ -70,14 +70,6 @@ public class GravestoneUIManager : MonoBehaviour
         DisableUI(commentUI);
         
         SetNumFlowers(_currentGravestone.GetInfo().NumFlowers);
-    }
-
-    private void Update()
-    {
-        if (Input.GetButtonDown("Jump"))
-        {
-            AddComment("Hewwo hi");
-        }
     }
 
     public void Deactivate()
@@ -112,7 +104,6 @@ public class GravestoneUIManager : MonoBehaviour
         DisableUI(initialViewUI);
         DisableUI(flowerUI);
         EnableUI(commentUI);
-        
         
         
         // Retrieve all comments?
@@ -223,7 +214,6 @@ public class GravestoneUIManager : MonoBehaviour
             UserCommentPair userCommentPair = new UserCommentPair();
             userCommentPair.user = keyValuePair.Key;
             userCommentPair.comment = keyValuePair.Value.ToString();
-            Debug.Log($"After fromjson : User: {userCommentPair.user}, comment :{userCommentPair.comment}");
             gravestoneCommentFlowerData.userCommentPairs.Add(userCommentPair);
         }
         

@@ -403,6 +403,7 @@ MonoBehaviour:
   id: 
   nameText: {fileID: 4493180963141026313}
   lifetimeText: {fileID: 4290963204478749923}
+  taglineText: {fileID: 7464007537278700807}
   observationCameraPos: {fileID: 14693420978921006}
 --- !u!1 &2527761280135344301
 GameObject:

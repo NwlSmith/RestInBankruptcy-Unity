@@ -39,6 +39,8 @@ public class LevelLoader : MonoBehaviour
         public int startTime;
         public int endTime;
         public int numFlowers = 0;
+        public string description = "";
+        public string numEmployeesString = "";
         // Add in comments
     }
 
@@ -368,10 +370,42 @@ public class LevelLoader : MonoBehaviour
             GravestoneData gravestoneData = new GravestoneData();
             gravestoneData.id = jsonObject.GetValue("packageId").ToString();
             gravestoneData.name = jsonObject.GetValue("title").ToString();
-            gravestoneData.startTime = int.Parse(jsonObject.GetValue("lastModified").ToString().Substring(6, 4)); // temp value
-            gravestoneData.endTime = int.Parse(jsonObject.GetValue("dateIssued").ToString().Substring(0, 4));
+            //gravestoneData.startTime = int.Parse(jsonObject.GetValue("DateIncorporated").ToString().Substring(0, 4)); // temp value
+            
+            gravestoneData.endTime = jsonObject.GetValue("dateIssued").Value<DateTime>().Year;
+            
+            JToken startDateToken;
+            if (jsonObject.TryGetValue("DateIncorporated", out startDateToken) && startDateToken.ToString().Length > 0)
+            {
+                gravestoneData.startTime = startDateToken.Value<DateTime>().Year;
+            }
+            else
+            {
+                gravestoneData.startTime = gravestoneData.endTime;
+            }
+            
+            // try get description
+            JToken descriptionToken;
+            if (jsonObject.TryGetValue("naics_description", out descriptionToken) && descriptionToken.ToString().Length > 0)
+            {
+                gravestoneData.description = descriptionToken.ToString();
+            }
+            else if (jsonObject.TryGetValue("sic_description", out descriptionToken) && descriptionToken.ToString().Length > 0)
+            {
+                gravestoneData.description = descriptionToken.ToString();
+            }
+            
+            JToken numEmployeesToken;
+            if (jsonObject.TryGetValue("employees", out numEmployeesToken) && numEmployeesToken.ToString().Length > 0)
+            {
+                gravestoneData.numEmployeesString = numEmployeesToken.ToString();
+            }
+            else if (jsonObject.TryGetValue("employees_range", out numEmployeesToken) && numEmployeesToken.ToString().Length > 0)
+            {
+                gravestoneData.numEmployeesString = numEmployeesToken.ToString();
+            }
+            
             dataArray[i] = gravestoneData;
-            Debug.Log($"gravestone data title = {gravestoneData.name}, date = {gravestoneData.startTime}");
         }
 
         foreach (GravestoneData data in dataArray)

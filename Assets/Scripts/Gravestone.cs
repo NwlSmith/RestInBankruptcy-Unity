@@ -11,16 +11,23 @@ public class GravestoneInfo
     public DateTime StartTime;
     public DateTime EndTime;
     public int NumFlowers = 0;
+    public string Description = "";
+    public string NumEmployeesString = "";
 
     public void FromGravestoneData(LevelLoader.GravestoneData data)
     {
         ID = data.id;
         Name = data.name;
+        Debug.Log($"Start time = {data.startTime}");
+        if (data.startTime == 0)
+            data.startTime = data.endTime;
         StartTime = new DateTime(data.startTime, 1, 1);
         if (data.endTime == 0)
             data.endTime = 1;
         EndTime = new DateTime(data.endTime, 1, 1);
         NumFlowers = data.numFlowers;
+        Description = data.description;
+        NumEmployeesString = data.numEmployeesString;
     }
 }
 
@@ -29,12 +36,25 @@ public class Gravestone : MonoBehaviour
     [SerializeField] private string id;
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text lifetimeText;
+    [SerializeField] private TMP_Text taglineText;
     private GravestoneInfo _gravestoneInfo;
     public Transform observationCameraPos;
 
     private void Awake()
     {
         // REMOVE THIS
+        if (taglineText == null)
+        {
+            TMP_Text[] textAssets = GetComponentsInChildren<TMP_Text>();
+            foreach (var textAsset in textAssets)
+            {
+                if (textAsset.name.Equals("TaglineText"))
+                {
+                    taglineText = textAsset;
+                    break;
+                }
+            }
+        }
         SetupGravestone("0", "test name", DateTime.Today - new TimeSpan(365*5, 23, 59, 59), DateTime.Today, 0);
     }
 
@@ -64,6 +84,7 @@ public class Gravestone : MonoBehaviour
         nameText.text = _gravestoneInfo.Name;
         string lifetimeString = $"{_gravestoneInfo.StartTime.Year} - {_gravestoneInfo.EndTime.Year}";
         lifetimeText.text = lifetimeString;
+        taglineText.text = _gravestoneInfo.Description;
     }
 
     public GravestoneInfo GetInfo()
