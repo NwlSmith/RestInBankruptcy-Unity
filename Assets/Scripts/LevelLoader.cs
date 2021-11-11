@@ -237,9 +237,9 @@ public class LevelLoader : MonoBehaviour
         if (numAssignedGravestones < gravestones.Length)
         {
             // get rid of extra gravestones
+            Debug.LogError($"Num gravestones in scene: {gravestones.Length}. Num gravestone data recieved: {parsedDataArray.Length}. Too many gravestones.");
             for (; numAssignedGravestones < gravestones.Length; numAssignedGravestones++)
             {
-                Debug.LogError($"Num gravestones in scene: {gravestones.Length}. Num gravestone data recieved: {parsedDataArray.Length}. Too many gravestones.");
                 gravestones[numAssignedGravestones].gameObject.SetActive(false);
             }
         }
@@ -363,10 +363,6 @@ public class LevelLoader : MonoBehaviour
         {
             JObject jsonObject = jsonDataArray.Value<JObject>(i);
 
-            if (i == 0)
-            {
-                Debug.Log(jsonObject.ToString());
-            }
             GravestoneData gravestoneData = new GravestoneData();
             gravestoneData.id = jsonObject.GetValue("packageId").ToString();
             gravestoneData.name = jsonObject.GetValue("title").ToString();
@@ -386,7 +382,11 @@ public class LevelLoader : MonoBehaviour
             
             // try get description
             JToken descriptionToken;
-            if (jsonObject.TryGetValue("naics_description", out descriptionToken) && descriptionToken.ToString().Length > 0)
+            if (jsonObject.TryGetValue("description", out descriptionToken) && descriptionToken.ToString().Length > 0)
+            {
+                gravestoneData.description = descriptionToken.ToString();
+            }
+            else if (jsonObject.TryGetValue("naics_description", out descriptionToken) && descriptionToken.ToString().Length > 0)
             {
                 gravestoneData.description = descriptionToken.ToString();
             }
@@ -407,11 +407,7 @@ public class LevelLoader : MonoBehaviour
             
             dataArray[i] = gravestoneData;
         }
-
-        foreach (GravestoneData data in dataArray)
-        {
-            Debug.Log($"deserialized {data.name}");
-        }
+        
         return dataArray;
     }
 }

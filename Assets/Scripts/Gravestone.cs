@@ -18,7 +18,6 @@ public class GravestoneInfo
     {
         ID = data.id;
         Name = data.name;
-        Debug.Log($"Start time = {data.startTime}");
         if (data.startTime == 0)
             data.startTime = data.endTime;
         StartTime = new DateTime(data.startTime, 1, 1);
