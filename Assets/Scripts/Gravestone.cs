@@ -91,9 +91,9 @@ public class Gravestone : MonoBehaviour
         return _gravestoneInfo;
     }
 
-    public void IncrementNumFlowers()
+    public void IncrementNumFlowers(int numToIncrement)
     {
-        _gravestoneInfo.NumFlowers++;
+        _gravestoneInfo.NumFlowers += numToIncrement;
     }
 
     public void SetNumFlowers(int newNumber)

@@ -11,16 +11,9 @@ public class GravestoneUIManager : MonoBehaviour
 {
 
     [System.Serializable]
-    public class UserCommentPair
-    {
-        public string user = "";
-        public string comment = "";
-    }
-    
-    [System.Serializable]
     public class GravestoneCommentFlowerData
     {
-        public List<UserCommentPair> userCommentPairs = new List<UserCommentPair>();
+        public List<string> comments = new List<string>();
         public string packageId;
         public int flowers;
     }
@@ -32,11 +25,16 @@ public class GravestoneUIManager : MonoBehaviour
     }
 
     [System.Serializable]
-    public class PutRequest
+    public class FlowerPutRequest
     {
         public KeyObj keyObj;
-        public string fieldName;
-        public string fieldValue;
+    }
+
+    [System.Serializable]
+    public class CommentPutRequest
+    {
+        public KeyObj keyObj;
+        public string comment;
     }
     
     /*
@@ -48,15 +46,20 @@ public class GravestoneUIManager : MonoBehaviour
      * - to enter, have a 3d speech bubble with words? on lower right, cover with a button, clicking on it brings up screen-space list of comments, and a text box to enter in a comment of your own, also has return button.
      */
 
+    [SerializeField] private TMP_Text numFlowersToDonateText;
+    [SerializeField] private Button flowerMinusButton;
+    [SerializeField] private Button flowerPlusButton;
     [SerializeField] private TMP_Text[] flowerNumberTexts;
+    [SerializeField] private TMP_Text commentNumberText;
     [SerializeField] private RectTransform[] initialViewUI;
     [SerializeField] private RectTransform[] flowerUI;
     [SerializeField] private RectTransform[] commentUI;
-    [SerializeField] private TMP_InputField usernameInputField;
     [SerializeField] private TMP_InputField commentInputField;
     [SerializeField] private RectTransform commentContentPane;
-    [SerializeField] private Image comment;
     [SerializeField] private GameObject commentPrefab;
+    [SerializeField] private TMP_Text enterCommentMessage;
+
+    private int _numFlowersToAdd = 1;
 
     public bool readyToShowUI { get; private set; } = true;
 
@@ -66,7 +69,8 @@ public class GravestoneUIManager : MonoBehaviour
     private Canvas _canvas;
 
     private string databaseServerURL = "http://18.220.179.6:8080/dynamoDB/doc/GravestoneOfferings/packageId/";
-    private string databaseServerSendFlowersURL = "http://18.220.179.6:8080/dynamoDB/doc/GravestoneOfferings";
+    private string databaseServerSendFlowersURL = "http://18.220.179.6:8080/dynamoDB/doc/flowers/";
+    private string databaseServerSendCommentsURL = "http://18.220.179.6:8080/dynamoDB/doc/comments";
 
     private void Awake()
     {
@@ -86,6 +90,7 @@ public class GravestoneUIManager : MonoBehaviour
         DisableUI(commentUI);
         
         SetNumFlowers(_currentGravestone.GetInfo().NumFlowers);
+        enterCommentMessage.enabled = false;
     }
 
     public void Deactivate()
@@ -106,6 +111,9 @@ public class GravestoneUIManager : MonoBehaviour
         DisableUI(initialViewUI);
         EnableUI(flowerUI);
         DisableUI(commentUI);
+
+        _numFlowersToAdd = 1;
+        DisableButton(flowerMinusButton);
     }
 
     public void FlowerButtonReturn()
@@ -124,6 +132,7 @@ public class GravestoneUIManager : MonoBehaviour
         
         // Retrieve all comments?
         // Set content pane height to the height of a comment * number of comments
+        enterCommentMessage.enabled = false;
     }
 
     public void CommentButtonReturn()
@@ -131,58 +140,6 @@ public class GravestoneUIManager : MonoBehaviour
         EnableUI(initialViewUI);
         DisableUI(flowerUI);
         DisableUI(commentUI);
-    }
-    
-    public void GiveFlowerButton()
-    {
-        _currentGravestone.IncrementNumFlowers();
-        SetNumFlowers(_currentGravestone.GetInfo().NumFlowers);
-
-        StartCoroutine(SendNewFlowerNumber());
-    }
-
-    private IEnumerator SendNewFlowerNumber()
-    {
-        string URL = databaseServerSendFlowersURL;// + "USCOURTS-deb-1_07-bk-10416";//+ id;
-        
-        // Construct JSON object:
-
-        PutRequest flowerPut = new PutRequest();
-        flowerPut.keyObj = new KeyObj();
-        flowerPut.keyObj.packageId = "USCOURTS-deb-1_07-bk-10416"; //_currentGravestone.GetInfo().ID
-        flowerPut.fieldName = "flowers";
-        flowerPut.fieldValue = _currentGravestone.GetInfo().NumFlowers.ToString();
-
-        string jsonObj = JsonUtility.ToJson(flowerPut);
-
-        byte[] myData = System.Text.Encoding.UTF8.GetBytes(jsonObj);
-        
-        UnityWebRequest webRequest = UnityWebRequest.Put(URL, myData);
-        Debug.Log($"Sending request {jsonObj} to {URL}");
-        // Request and wait for the desired page.
-        yield return webRequest.SendWebRequest();
-
-        string webRequestResponse = "";
-
-        if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
-            webRequest.result == UnityWebRequest.Result.ProtocolError ||
-            webRequest.result == UnityWebRequest.Result.DataProcessingError) {
-            Debug.LogError("Error: " + webRequest.error);
-            yield return new WaitForSeconds(200f);
-        }
-        else {
-            webRequestResponse = webRequest.downloadHandler.text;
-            Debug.Log(webRequestResponse);
-        }
-    }
-
-    private void SetNumFlowers(int numFlowers)
-    {
-        string flowerNumber = numFlowers.ToString();
-        foreach (TMP_Text flowerNumberText in flowerNumberTexts)
-        {
-            flowerNumberText.text = flowerNumber;
-        }
     }
 
     private void EnableUI(RectTransform[] uiElements)
@@ -211,7 +168,7 @@ public class GravestoneUIManager : MonoBehaviour
     {
         readyToShowUI = false;
 
-        string URL = databaseServerURL + "USCOURTS-deb-1_07-bk-10416";//+ id;
+        string URL = databaseServerURL + id;
         
         UnityWebRequest webRequest = UnityWebRequest.Get(URL);
         Debug.Log($"Sending request for {URL}");
@@ -242,10 +199,20 @@ public class GravestoneUIManager : MonoBehaviour
             _currentGravestone.SetNumFlowers(parsedDataArray.flowers);
             SetNumFlowers(parsedDataArray.flowers);
 
-            for (int i = commentContentPane.childCount - 1; i >= 0; i++)
+            for (int i = commentContentPane.childCount - 1; i >= 0; i--)
             {
                 // Get rid of children!
+                Debug.Log($"Destroying child {i}, name: {commentContentPane.GetChild(i)}");
+                Destroy(commentContentPane.GetChild(i).gameObject);
             }
+            commentContentPane.DetachChildren();
+
+            foreach (var comment in parsedDataArray.comments)
+            {
+                AddCommentUI(comment);
+            }
+            
+            commentNumberText.text = parsedDataArray.comments.Count.ToString();
         }
         
         readyToShowUI = true;
@@ -258,55 +225,200 @@ public class GravestoneUIManager : MonoBehaviour
         GravestoneCommentFlowerData gravestoneCommentFlowerData = new GravestoneCommentFlowerData();
         gravestoneCommentFlowerData.packageId = jsonDataObject.GetValue("packageId").ToString();
         gravestoneCommentFlowerData.flowers = int.Parse(jsonDataObject.GetValue("flowers").ToString());
-        JObject jsonComments = (JObject)jsonDataObject.GetValue("comments");
+        JArray jsonComments = (JArray)jsonDataObject.GetValue("comments");
 
         Debug.Log($"package has {jsonComments.Count} children");
 
         foreach (var keyValuePair in jsonComments)
         {
-            UserCommentPair userCommentPair = new UserCommentPair();
-            userCommentPair.user = keyValuePair.Key;
-            userCommentPair.comment = keyValuePair.Value.ToString();
-            gravestoneCommentFlowerData.userCommentPairs.Add(userCommentPair);
+            string comment = keyValuePair.ToString();
+            Debug.Log($"comment string is: {comment}");
+            gravestoneCommentFlowerData.comments.Add(comment);
         }
         
         return gravestoneCommentFlowerData;
     }
     
-    // Comment System.
+    // Flower button
 
-    private void AddComment(string username, string newComment)
+    public void IncrementNumFlowerButton()
+    {
+        _numFlowersToAdd++;
+        _numFlowersToAdd = Mathf.Clamp(_numFlowersToAdd, 1, 10);
+        numFlowersToDonateText.text = _numFlowersToAdd.ToString();
+        
+        EnableButton(flowerMinusButton);
+        if (_numFlowersToAdd == 10)
+        {
+            flowerPlusButton.interactable = false;
+            DisableButton(flowerPlusButton);
+        }
+        else
+        {
+            flowerPlusButton.interactable = true;
+            EnableButton(flowerPlusButton);
+        }
+    }
+    
+    public void DecrementNumFlowerButton()
+    {
+        _numFlowersToAdd--;
+        _numFlowersToAdd = Mathf.Clamp(_numFlowersToAdd, 1, 10);
+        numFlowersToDonateText.text = _numFlowersToAdd.ToString();
+        
+        EnableButton(flowerPlusButton);
+        if (_numFlowersToAdd == 1)
+        {
+            DisableButton(flowerMinusButton);
+        }
+        else
+        {
+            EnableButton(flowerMinusButton);
+        }
+    }
+
+    private void EnableButton(Button buttonToEnable)
+    {
+        buttonToEnable.interactable = true;
+        if (ColorUtility.TryParseHtmlString("#1B2C4AFF", out Color color))
+        {
+            buttonToEnable.GetComponentInChildren<TMP_Text>().color = color;
+        }
+        else
+        {
+            Debug.LogError("Failed to convert color properly?");
+        }
+    }
+
+    private void DisableButton(Button buttonToDisable)
+    {
+        buttonToDisable.interactable = false;
+        if (ColorUtility.TryParseHtmlString("#1B2C4A80", out Color color))
+        {
+            buttonToDisable.GetComponentInChildren<TMP_Text>().color = color;
+        }
+        else
+        {
+            Debug.LogError("Failed to convert color properly?");
+        }
+    }
+
+    public void GiveFlowerButton()
+    {
+        _currentGravestone.IncrementNumFlowers(_numFlowersToAdd);
+        SetNumFlowers(_currentGravestone.GetInfo().NumFlowers);
+        StartCoroutine(SendNewFlowerNumber());
+        
+        FlowerButtonReturn();
+    }
+
+    private void SetNumFlowers(int newNumFlowers)
+    {
+        string flowerNumber = newNumFlowers.ToString();
+        foreach (TMP_Text flowerNumberText in flowerNumberTexts)
+        {
+            flowerNumberText.text = flowerNumber;
+        }
+    }
+
+    private IEnumerator SendNewFlowerNumber()
+    {
+        string URL = databaseServerSendFlowersURL + _numFlowersToAdd;
+
+        // Construct JSON object:
+
+        FlowerPutRequest flowerPut = new FlowerPutRequest();
+        flowerPut.keyObj = new KeyObj();
+        flowerPut.keyObj.packageId = _currentGravestone.GetInfo().ID;
+
+        string jsonObj = JsonUtility.ToJson(flowerPut);
+
+        byte[] myData = System.Text.Encoding.UTF8.GetBytes(jsonObj);
+        
+        UnityWebRequest webRequest = UnityWebRequest.Put(URL, myData);
+        webRequest.SetRequestHeader ("Content-Type", "application/json");
+        Debug.Log($"Sending request {jsonObj} to {URL}");
+        // Request and wait for the desired page.
+        yield return webRequest.SendWebRequest();
+
+        string webRequestResponse = "";
+
+        if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
+            webRequest.result == UnityWebRequest.Result.ProtocolError ||
+            webRequest.result == UnityWebRequest.Result.DataProcessingError) {
+            Debug.LogError("Error: " + webRequest.error);
+            yield return new WaitForSeconds(200f);
+        }
+        else {
+            webRequestResponse = webRequest.downloadHandler.text;
+            Debug.Log(webRequestResponse);
+        }
+    }
+    
+    // Comment System.
+    
+    public void OnPostButtonPressed()
+    {
+        Debug.Log("PostButtonPressed");
+        string newComment = commentInputField.text;
+        if (newComment != "")
+        {
+            AddComment(newComment);
+            commentInputField.text = "";
+            enterCommentMessage.enabled = false;
+        }
+        else
+        {
+            enterCommentMessage.enabled = true;
+            commentInputField.onValueChanged.AddListener(delegate { HideWarningMessageCallback(); });
+        }
+    }
+
+    private void HideWarningMessageCallback()
+    {
+        enterCommentMessage.enabled = false;
+        commentInputField.onValueChanged.RemoveAllListeners();
+    }
+
+    private void AddCommentUI(string newComment)
     {
         GameObject newCommentGO = Instantiate(commentPrefab, commentContentPane);
         TMP_Text commentText = newCommentGO.GetComponentInChildren<TMP_Text>();
         commentText.text = newComment;
 
-        commentContentPane.sizeDelta = new Vector2(0, commentText.text.Split('\n').Length * 28.5f + 28.5f);
+        newCommentGO.GetComponent<RectTransform>().sizeDelta = new Vector2(0, commentText.text.Split('\n').Length * 28.5f + 28.5f);
+        Debug.Log($"Comment {newComment} has {commentText.text.Split('\n').Length} lines, so it should be {commentText.text.Split('\n').Length * 28.5f + 28.5f} tall");
 
         float sizeOfPane = 18;
         for (int i = 0; i < commentContentPane.childCount; i++)
         {
-            sizeOfPane += commentContentPane.GetChild(i).GetComponent<RectTransform>().rect.height + 18;
+            sizeOfPane += commentContentPane.GetChild(i).GetComponent<RectTransform>().sizeDelta.y + 18;//rect.height + 18;
+            Debug.Log($"Adding {commentContentPane.GetChild(i).GetComponent<RectTransform>().sizeDelta.y + 18} from {commentContentPane.GetChild(i).name} to size of pane, for total of  {sizeOfPane} ");
         }
         
         commentContentPane.sizeDelta = new Vector2(0, sizeOfPane);
-        StartCoroutine(AddCommentCO(username, newComment));
+
+        commentNumberText.text = commentContentPane.childCount.ToString();
     }
 
-    private IEnumerator AddCommentCO(string username, string newComment)
+    private void AddComment(string newComment)
     {
-        yield return null;
+        AddCommentUI(newComment);
+        StartCoroutine(AddCommentCO(newComment));
+    }
+
+    private IEnumerator AddCommentCO(string newComment)
+    {
         // send newComment
 
-        string URL = databaseServerSendFlowersURL;// + "USCOURTS-deb-1_07-bk-10416";//+ id;
+        string URL = databaseServerSendCommentsURL;// + "USCOURTS-deb-1_07-bk-10416";//+ id;
         
         // Construct JSON object:
 
-        PutRequest commentPut = new PutRequest();
+        CommentPutRequest commentPut = new CommentPutRequest();
         commentPut.keyObj = new KeyObj();
-        commentPut.keyObj.packageId = "USCOURTS-deb-1_07-bk-10416"; //_currentGravestone.GetInfo().ID
-        commentPut.fieldName = "comments." + "User4";
-        commentPut.fieldValue = newComment;
+        commentPut.keyObj.packageId = _currentGravestone.GetInfo().ID;//"USCOURTS-nywb-1_00-bk-12654";//"USCOURTS-deb-1_07-bk-10416"; 
+        commentPut.comment = newComment;
 
         string jsonObj = JsonUtility.ToJson(commentPut);
 
@@ -330,18 +442,5 @@ public class GravestoneUIManager : MonoBehaviour
             webRequestResponse = webRequest.downloadHandler.text;
             Debug.Log(webRequestResponse);
         }
-    }
-
-    public void OnPostButtonPressed()
-    {
-        Debug.Log("PostButtonPressed");
-        // Check if username is blank
-        // Check if comment is blank
-        string newUser = "";//usernameInputField.text;
-        string newComment = commentInputField.GetComponentInChildren<TMP_Text>().text;
-        AddComment(newUser, newComment);
-        comment.GetComponentInChildren<TMP_Text>().text = "";
-        
-        // Send to server
     }
 }
