@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 
 public class GravestoneUIManager : MonoBehaviour
@@ -51,8 +52,10 @@ public class GravestoneUIManager : MonoBehaviour
     [SerializeField] private RectTransform[] initialViewUI;
     [SerializeField] private RectTransform[] flowerUI;
     [SerializeField] private RectTransform[] commentUI;
-    [SerializeField] private RectTransform commentContentPane;
+    [SerializeField] private TMP_InputField usernameInputField;
     [SerializeField] private TMP_InputField commentInputField;
+    [SerializeField] private RectTransform commentContentPane;
+    [SerializeField] private Image comment;
     [SerializeField] private GameObject commentPrefab;
 
     public bool readyToShowUI { get; private set; } = true;
@@ -70,8 +73,6 @@ public class GravestoneUIManager : MonoBehaviour
         _canvas = GetComponent<Canvas>();
         _canvas.enabled = false;
         _playerLook = FindObjectOfType<PlayerLook>();
-        
-        AddComment("Lorem Ipsem dolor.");
     }
 
     public void Activate(Gravestone gravestone)
@@ -274,16 +275,25 @@ public class GravestoneUIManager : MonoBehaviour
     
     // Comment System.
 
-    private void AddComment(string newComment)
+    private void AddComment(string username, string newComment)
     {
         GameObject newCommentGO = Instantiate(commentPrefab, commentContentPane);
-        TMP_Text commentText = newCommentGO.GetComponent<TMP_Text>();
+        TMP_Text commentText = newCommentGO.GetComponentInChildren<TMP_Text>();
         commentText.text = newComment;
-        commentContentPane.sizeDelta = new Vector2(0, commentContentPane.childCount * newCommentGO.GetComponent<RectTransform>().rect.height);
-        StartCoroutine(AddCommentCO(newComment));
+
+        commentContentPane.sizeDelta = new Vector2(0, commentText.text.Split('\n').Length * 28.5f + 28.5f);
+
+        float sizeOfPane = 18;
+        for (int i = 0; i < commentContentPane.childCount; i++)
+        {
+            sizeOfPane += commentContentPane.GetChild(i).GetComponent<RectTransform>().rect.height + 18;
+        }
+        
+        commentContentPane.sizeDelta = new Vector2(0, sizeOfPane);
+        StartCoroutine(AddCommentCO(username, newComment));
     }
 
-    private IEnumerator AddCommentCO(string newComment)
+    private IEnumerator AddCommentCO(string username, string newComment)
     {
         yield return null;
         // send newComment
@@ -325,9 +335,12 @@ public class GravestoneUIManager : MonoBehaviour
     public void OnPostButtonPressed()
     {
         Debug.Log("PostButtonPressed");
-        string newComment = commentInputField.text;
-        AddComment(newComment);
-        commentInputField.text = "";
+        // Check if username is blank
+        // Check if comment is blank
+        string newUser = "";//usernameInputField.text;
+        string newComment = commentInputField.GetComponentInChildren<TMP_Text>().text;
+        AddComment(newUser, newComment);
+        comment.GetComponentInChildren<TMP_Text>().text = "";
         
         // Send to server
     }
