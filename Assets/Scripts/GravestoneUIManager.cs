@@ -295,12 +295,15 @@ public class GravestoneUIManager : MonoBehaviour
         PutRequest commentPut = new PutRequest();
         commentPut.keyObj = new KeyObj();
         commentPut.keyObj.packageId = "USCOURTS-deb-1_07-bk-10416"; //_currentGravestone.GetInfo().ID
-        commentPut.fieldName = "comment." + "user2";
+        commentPut.fieldName = "comments." + "User4";
         commentPut.fieldValue = newComment;
 
         string jsonObj = JsonUtility.ToJson(commentPut);
+
+        byte[] jsonObjAsBytes = System.Text.Encoding.UTF8.GetBytes(jsonObj);
         
-        UnityWebRequest webRequest = UnityWebRequest.Put(URL, jsonObj);
+        UnityWebRequest webRequest = UnityWebRequest.Put(URL, jsonObjAsBytes);
+        webRequest.SetRequestHeader ("Content-Type", "application/json");
         Debug.Log($"Sending comment request {jsonObj} to {URL}");
         // Request and wait for the desired page.
         yield return webRequest.SendWebRequest();
