@@ -59,6 +59,8 @@ public class GravestoneUIManager : MonoBehaviour
     [SerializeField] private GameObject commentPrefab;
     [SerializeField] private TMP_Text enterCommentMessage;
 
+    private float _lerpDuration = .25f;
+
     private int _numFlowersToAdd = 1;
 
     public bool readyToShowUI { get; private set; } = true;
@@ -85,9 +87,10 @@ public class GravestoneUIManager : MonoBehaviour
         _canvas.transform.position = gravestone.transform.position;
         
         _canvas.enabled = true;
+        DisableUIImmediate(initialViewUI);
         EnableUI(initialViewUI);
-        DisableUI(flowerUI);
-        DisableUI(commentUI);
+        DisableUIImmediate(flowerUI);
+        DisableUIImmediate(commentUI);
         
         SetNumFlowers(_currentGravestone.GetInfo().NumFlowers);
         enterCommentMessage.enabled = false;
@@ -95,10 +98,10 @@ public class GravestoneUIManager : MonoBehaviour
 
     public void Deactivate()
     {
-        _canvas.enabled = false;
         DisableUI(initialViewUI);
         DisableUI(flowerUI);
         DisableUI(commentUI);
+        StartCoroutine(DisableCanvasAfterTime());
     }
 
     public void ExitButton()
@@ -144,18 +147,98 @@ public class GravestoneUIManager : MonoBehaviour
 
     private void EnableUI(RectTransform[] uiElements)
     {
+        StartCoroutine(EnableUIEnum(uiElements));
+    }
+
+    private IEnumerator EnableUIEnum(RectTransform[] uiElements)
+    {
         foreach (RectTransform rectTransform in uiElements)
         {
             rectTransform.gameObject.SetActive(true);
         }
+        
+        Vector3[] initScales = new Vector3[uiElements.Length];
+
+        for (int i = 0; i < uiElements.Length; i++)
+        {
+            initScales[i] = uiElements[i].localScale;
+        }
+        float elapsedTime = 0;
+
+        Vector3 target = new Vector3(.001f, .001f, .001f);
+
+        Velocities = new Vector3[uiElements.Length];
+
+        while (elapsedTime < _lerpDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float fraction = elapsedTime / _lerpDuration;
+            for (int i = 0; i < uiElements.Length; i++)
+            {
+                uiElements[i].localScale = Vector3.Slerp(initScales[i], target, fraction);
+            }
+            yield return null;
+        }
+        
+        for (int i = 0; i < uiElements.Length; i++)
+        {
+            uiElements[i].localScale = target;
+        }
     }
 
-    private void DisableUI(RectTransform[] uiElements)
+    private Vector3[] Velocities;
+
+    private void DisableUIImmediate(RectTransform[] uiElements)
     {
         foreach (RectTransform rectTransform in uiElements)
         {
             rectTransform.gameObject.SetActive(false);
+            rectTransform.localScale = Vector3.zero;
         }
+    }
+    
+    private void DisableUI(RectTransform[] uiElements)
+    {
+        StartCoroutine(DisableUIEnum(uiElements));
+    }
+    
+    private IEnumerator DisableUIEnum(RectTransform[] uiElements)
+    {
+        Vector3[] initScales = new Vector3[uiElements.Length];
+
+        for (int i = 0; i < uiElements.Length; i++)
+        {
+            initScales[i] = uiElements[i].localScale;
+        }
+
+        float elapsedTime = 0;
+
+        while (elapsedTime < _lerpDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float fraction = elapsedTime / _lerpDuration;
+            for (int i = 0; i < uiElements.Length; i++)
+            {
+                uiElements[i].localScale = Vector3.Slerp(initScales[i], Vector3.zero, fraction);
+            }
+            yield return null;
+        }
+        
+        for (int i = 0; i < uiElements.Length; i++)
+        {
+            uiElements[i].localScale = Vector3.zero;
+        }
+        
+        foreach (RectTransform rectTransform in uiElements)
+        {
+            rectTransform.gameObject.SetActive(false);
+        }
+    }
+
+    private IEnumerator DisableCanvasAfterTime()
+    {
+        yield return new WaitForSeconds(_lerpDuration);
+        _canvas.enabled = false;
     }
 
     public void RequestGravestoneData(string id, Gravestone newlyHighlightedGravestone)
