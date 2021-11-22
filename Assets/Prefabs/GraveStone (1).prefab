@@ -69,7 +69,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2174105977102360355, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.15399997
+      value: 0.16375
       objectReference: {fileID: 0}
     - target: {fileID: 2174105977102360355, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -84,8 +84,20 @@ PrefabInstance:
       value: 0.154
       objectReference: {fileID: 0}
     - target: {fileID: 4493180963141026313, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_fontSize
+      value: 1.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493180963141026313, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_margin.w
+      value: 0.24714494
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493180963141026313, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_margin.x
       value: 0.052663565
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493180963141026313, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_margin.y
+      value: -0.1424092
       objectReference: {fileID: 0}
     - target: {fileID: 4493180963141026313, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_margin.z
@@ -94,6 +106,18 @@ PrefabInstance:
     - target: {fileID: 5109374156832190739, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.154
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_margin.w
+      value: -0.1546033
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_margin.x
+      value: 0.068253875
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_margin.z
+      value: 0.051576853
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}

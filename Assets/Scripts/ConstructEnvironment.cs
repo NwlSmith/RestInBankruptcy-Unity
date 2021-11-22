@@ -20,7 +20,9 @@ public class ConstructEnvironment : MonoBehaviour
     public GameObject[] _xEdgeTiles;
     public GameObject[] _yEdgeTiles;
     public GameObject _cornerTile;
-
+    public GameObject _doorTile;
+    public GameObject[] _xWalkwayTiles;
+    public GameObject[] _yWalkwayTiles;
     public GameObject testGO;
 
     private void Start()
@@ -70,6 +72,16 @@ public class ConstructEnvironment : MonoBehaviour
                 else if (y == _dimensions.y - 1)
                 {
                     SpawnRandomRotAdjustedTile(_yEdgeTiles, location, 180);
+                }
+                // X walkway tiles
+                else if (x == 1 || x == _dimensions.x - 2 || x == _dimensions.x / 2)
+                {
+                    SpawnRandomTile(_xWalkwayTiles, location);
+                }
+                // Y walkway tiles
+                else if (y == 1 || y == _dimensions.y - 2 || y == _dimensions.y / 2)
+                {
+                    SpawnRandomTile(_yWalkwayTiles, location);
                 }
                 else
                 {
@@ -121,6 +133,7 @@ public class ConstructEnvironment : MonoBehaviour
             {
                 newChildPosition.y = hit.point.y;
                 childGO.transform.position = newChildPosition;
+                childGO.transform.rotation = Quaternion.FromToRotation (Vector3.up, hit.normal) * childGO.transform.rotation;
             }
             else
             {
@@ -151,6 +164,8 @@ public class ConstructEnvironment : MonoBehaviour
             {
                 newChildPosition.y = hit.point.y;
                 childGO.transform.position = newChildPosition;
+                
+                childGO.transform.rotation = Quaternion.FromToRotation (Vector3.up, hit.normal) * childGO.transform.rotation;
             }
             else
             {
@@ -182,6 +197,7 @@ public class ConstructEnvironment : MonoBehaviour
                 childGO.transform.position = newChildPosition;
                 childGO.transform.localScale = new Vector3(scaleHorAdjustment, scaleVerAdjustment, scaleHorAdjustment);
                 childGO.transform.eulerAngles = Vector3.up * rotationAdjustment;
+                childGO.transform.rotation = Quaternion.FromToRotation (Vector3.up, hit.normal) * childGO.transform.rotation;
             }
             else
             {

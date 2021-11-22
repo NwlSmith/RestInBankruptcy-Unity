@@ -138,7 +138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2174105977102360355, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.13
+      value: 0.141
       objectReference: {fileID: 0}
     - target: {fileID: 2174105977102360355, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -156,13 +156,47 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 1.065
       objectReference: {fileID: 0}
+    - target: {fileID: 4493180963141026313, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_fontSize
+      value: 1.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493180963141026313, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_margin.x
+      value: 0.14880204
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493180963141026313, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_margin.y
+      value: -0.117943525
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493180963141026313, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_margin.z
+      value: 0.15257287
+      objectReference: {fileID: 0}
     - target: {fileID: 5109374156832190739, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.13000001
+      value: 0.141
       objectReference: {fileID: 0}
     - target: {fileID: 5109374156832190739, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.841
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_text
+      value: 'Tagline
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_margin.w
+      value: -0.4652989
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_margin.x
+      value: 0.14540255
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_margin.z
+      value: 0.15215492
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}

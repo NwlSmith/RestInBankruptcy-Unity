@@ -116,6 +116,7 @@ public class GravestoneUIManager : MonoBehaviour
         DisableUI(commentUI);
 
         _numFlowersToAdd = 1;
+        numFlowersToDonateText.text = _numFlowersToAdd.ToString();
         DisableButton(flowerMinusButton);
     }
 
