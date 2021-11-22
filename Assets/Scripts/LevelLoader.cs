@@ -28,7 +28,6 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] private TMP_Text progressText;
     [SerializeField] private Slider progressSlider;
 
-    private string databaseURL = "http://18.220.179.6:8080/govinfo/dummydata";
     private string databaseServerURL = "http://18.220.179.6:8080/dynamoDB/docs/RestInDatabase/courtState/New%20York";
     
     [System.Serializable]
@@ -41,7 +40,6 @@ public class LevelLoader : MonoBehaviour
         public int numFlowers = 0;
         public string description = "";
         public string numEmployeesString = "";
-        // Add in comments
     }
 
     private void Start()
@@ -134,9 +132,6 @@ public class LevelLoader : MonoBehaviour
             
             progressSlider.value = 2f / 4f;
         }
-        
-        // REMOVE THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //webRequestResponse = GetDummyDataFromFile();
 
         /* --- Get data from JSON --- */
         
