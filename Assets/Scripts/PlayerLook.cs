@@ -44,10 +44,18 @@ public class PlayerLook : MonoBehaviour
         ResolveMouseMovement();
         ResolveMousePointing();
 
-        if (_viewportCaptured && InputManager.Instance.Escape)
+        if (InputManager.Instance.Escape)
         {
-            ExitGravestoneUI();
+            if (_viewportCaptured)
+            {
+                ExitGravestoneUI();
+            }
+            else
+            {
+                ReleaseMouseInput();
+            }
         }
+        
     }
 
     private void ResolveMouseMovement()
