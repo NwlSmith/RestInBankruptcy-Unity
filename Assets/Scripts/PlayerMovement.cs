@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 /*
  * Date created: 10/26/2021
@@ -13,13 +14,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 15f;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float jumpHeight = 5f;
-    [SerializeField] private float maxVelocity = 100f; 
+    [SerializeField] private float maxVelocity = 100f;  
     
     
     private Vector3 _physicsVector;
     private bool _onGround = false;
     private CharacterController _charController;
     private PlayerLook _playerLook;
+    private AudioSource _audioSource;
+    private bool _audioSourceIsPlaying = false;
+
+    private Coroutine _volumeUpEnum;
+    private bool _volumeUpPlaying = false;
+    private Coroutine _volumeDownEnum;
+    private bool _volumeDownPlaying = false;
 
     void Start()
     {
@@ -32,6 +40,8 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log($"{name} does not contain a PlayerLook.");
         }
+
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -66,6 +76,19 @@ public class PlayerMovement : MonoBehaviour
                 _physicsVector.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
                 _onGround = false;
             }
+
+            if (moveVector.magnitude > 0 && !_audioSourceIsPlaying)
+            {
+                TurnOnWalkSound();
+            }
+            else if (moveVector.magnitude == 0)
+            {
+                TurnOffWalkSound();
+            }
+        }
+        else
+        {
+            TurnOffWalkSound();
         }
         // Increment physics gravity.
         _physicsVector.y += gravity * Time.fixedDeltaTime;
@@ -97,5 +120,76 @@ public class PlayerMovement : MonoBehaviour
                 _physicsVector.z = 0f;
             }
         }
+    }
+
+    private void TurnOnWalkSound()
+    {
+
+        if (_volumeUpPlaying)
+            return;
+        
+        if (_volumeDownPlaying)
+        {
+            _volumeDownPlaying = false;
+            StopCoroutine(_volumeDownEnum);
+        }
+        _volumeUpEnum = StartCoroutine(VolumeUpCO());
+    }
+
+    private void TurnOffWalkSound()
+    {
+        if (_volumeDownPlaying || !_audioSourceIsPlaying)
+            return;
+        
+        if (_volumeUpPlaying)
+        {
+            _volumeUpPlaying = false;
+            StopCoroutine(_volumeUpEnum);
+        }
+        _volumeDownEnum = StartCoroutine(VolumeDownCO());
+        
+        _audioSourceIsPlaying = false;
+    }
+
+    private IEnumerator VolumeUpCO()
+    {
+        Debug.Log("VolumeUpCO Started");
+        _audioSourceIsPlaying = true;
+        _volumeUpPlaying = true;
+
+        float elapsedTime = 0f;
+        float duration = .5f;
+        float initVol = _audioSource.volume;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            _audioSource.volume = Mathf.Lerp(initVol, 1f, elapsedTime / duration);
+            yield return null;
+        }
+        _audioSource.volume = 1f;
+        
+        _volumeUpPlaying = false;
+    }
+
+    private IEnumerator VolumeDownCO()
+    {
+        Debug.Log("VolumeDownCO Started");
+        _volumeDownPlaying = true;
+
+        float elapsedTime = 0f;
+        float duration = .5f;
+        float initVol = _audioSource.volume;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            _audioSource.volume = Mathf.Lerp(initVol, 0f, elapsedTime / duration);
+            yield return null;
+        }
+        _audioSource.volume = 0f;
+        
+        _volumeDownPlaying = false;
+        _audioSourceIsPlaying = false;
     }
 }

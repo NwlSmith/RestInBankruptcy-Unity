@@ -15,7 +15,7 @@ PlayerSettings:
   companyName: DefaultCompany
   productName: RestInBankruptcy-Unity
   defaultCursor: {fileID: 2800000, guid: f077f09cc55740a4dbe08ae4c3570b63, type: 3}
-  cursorHotspot: {x: 0.5, y: 0.5}
+  cursorHotspot: {x: 56, y: 56}
   m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
