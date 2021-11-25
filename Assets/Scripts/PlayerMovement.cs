@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         // Calculate physics movement.
         if (_onGround && !_charController.isGrounded)
         {
-            _physicsVector += moveVector * moveSpeed;
+            _physicsVector += moveVector * moveSpeed * .2f;
         }
         
         _onGround = _charController.isGrounded;
@@ -55,26 +55,16 @@ public class PlayerMovement : MonoBehaviour
             
             // When on the ground, the player's vertical velocity doesn't need to increase with gravity.
             if (_physicsVector.y < 0f)
+            {
                 _physicsVector.y = -2f;
+            }
             if (InputManager.Instance.YInput >= 0.1f)
             {
                 // Save the player's input movement so it will continue with same velocity while in air.
-                _physicsVector += moveVector * moveSpeed;
+                _physicsVector += moveVector * moveSpeed * .2f;
                 // Jump.
                 _physicsVector.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
                 _onGround = false;
-            }
-
-            //if the velocity is more than 0.01f the animation for walking will play
-            if (_charController.velocity.magnitude <= 0.01f)
-            {
-                //walkCycle.SetBool("ifMovingBool", false);
-            }
-
-            //if the player isn't moving then the idle animation will start
-            if (_charController.velocity.magnitude > 0.01f)
-            {
-                //walkCycle.SetBool("ifMovingBool", true);
             }
         }
         // Increment physics gravity.
