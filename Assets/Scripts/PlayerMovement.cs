@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         _audioSource = GetComponent<AudioSource>();
+        _audioSource.volume = 0f;
     }
 
     private void FixedUpdate()
