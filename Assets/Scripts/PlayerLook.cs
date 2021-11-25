@@ -41,8 +41,11 @@ public class PlayerLook : MonoBehaviour
 
     void Update()
     {
-        ResolveMouseMovement();
-        ResolveMousePointing();
+        if (!_viewportCaptured)
+        {
+            ResolveMouseMovement();
+            ResolveMousePointing();
+        }
 
         if (InputManager.Instance.Escape)
         {
@@ -112,6 +115,8 @@ public class PlayerLook : MonoBehaviour
         StartCoroutine(LerpToGravestonePosEnum());
 //        LerpToGravestoneCameraPos();
         Debug.Log($"Gravestone = {_currentlyHighlightedGravestone.name}");
+        
+        _currentlyHighlightedGravestone.StopHighlighting();
     }
 
     private IEnumerator LerpToGravestonePosEnum()
@@ -149,6 +154,8 @@ public class PlayerLook : MonoBehaviour
         gravestoneUI.Activate(_currentlyHighlightedGravestone);
 
         ReleaseMouseInput();
+        
+        _currentlyHighlightedGravestone = null;
     }
 
     public void ExitGravestoneUI()

@@ -34,8 +34,12 @@ public class Gravestone : MonoBehaviour
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text lifetimeText;
     [SerializeField] private TMP_Text taglineText;
+    public int gravestoneModelNum = 0;
     private GravestoneInfo _gravestoneInfo;
     public Transform observationCameraPos;
+
+    [SerializeField] private GameObject m_HighlightPrefab;
+    private GameObject m_Highlight;
 
     private void Awake()
     {
@@ -53,6 +57,12 @@ public class Gravestone : MonoBehaviour
             }
         }
         SetupGravestone("0", "test name", DateTime.Today - new TimeSpan(365*5, 23, 59, 59), DateTime.Today, 0);
+
+        m_Highlight = Instantiate(m_HighlightPrefab, transform, true);
+        m_Highlight.transform.localPosition = new Vector3(0, -.025f, 0);
+        m_Highlight.transform.localRotation = Quaternion.identity;
+        m_Highlight.GetComponent<MeshFilter>().mesh = transform.GetChild(0).GetChild(0).GetComponent<MeshFilter>().mesh;
+        m_Highlight.SetActive(false);
     }
 
 
@@ -102,10 +112,13 @@ public class Gravestone : MonoBehaviour
     public void StartHighlighting()
     {
         Debug.Log($"Highlighting gravestone of id {id}");
+        m_Highlight.SetActive(true);
+        
     }
 
     public void StopHighlighting()
     {
         Debug.Log($"Stopped highlighting gravestone of id {id}");
+        m_Highlight.SetActive(false);
     }
 }
