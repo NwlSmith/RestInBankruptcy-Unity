@@ -25,7 +25,10 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] private TMP_Text progressText;
     [SerializeField] private Slider progressSlider;
 
-    private string databaseServerURL = "http://18.220.179.6:8080/dynamoDB/docs/RestInDatabase/courtState/New%20York";
+    private readonly string databaseServerURL = "http://3.144.16.89:8080/dynamoDB/docs/RestInDatabase/courtState/";
+    private string nyString = "New%20York";
+    private string njString = "New%20Jersey";
+    private string caString = "California";
     
     [System.Serializable]
     public class GravestoneData
@@ -62,11 +65,25 @@ public class LevelLoader : MonoBehaviour
 
     public void OnPressStart()
     {
-        StartCoroutine(LoadSceneData());
+        StartCoroutine(LoadSceneData(nyString));
     }
-    
-    
-    private IEnumerator LoadSceneData()
+
+    public void OnPressStartNY()
+    {
+        StartCoroutine(LoadSceneData(nyString));
+    }
+
+    public void OnPressStartNJ()
+    {
+        StartCoroutine(LoadSceneData(njString));
+    }
+
+    public void OnPressStartCA()
+    {
+        StartCoroutine(LoadSceneData(caString));
+    }
+
+    private IEnumerator LoadSceneData(string stateString)
     {
         /* --- Fadeout --- */
         overlay.enabled = true;
@@ -110,7 +127,7 @@ public class LevelLoader : MonoBehaviour
         progressText.text = "Retrieving data from server...";
         progressSlider.value = 1f / 4f;
         
-        UnityWebRequest webRequest = UnityWebRequest.Get(databaseServerURL);
+        UnityWebRequest webRequest = UnityWebRequest.Get(databaseServerURL + stateString);
         // Request and wait for the desired page.
         yield return webRequest.SendWebRequest();
 

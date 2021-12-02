@@ -69,9 +69,9 @@ public class GravestoneUIManager : MonoBehaviour
     
     private Canvas _canvas;
 
-    private string databaseServerURL = "http://18.220.179.6:8080/dynamoDB/doc/GravestoneOfferings/packageId/";
-    private string databaseServerSendFlowersURL = "http://18.220.179.6:8080/dynamoDB/doc/flowers/";
-    private string databaseServerSendCommentsURL = "http://18.220.179.6:8080/dynamoDB/doc/comments";
+    private string databaseServerURL = "http://3.144.16.89:8080/dynamoDB/doc/GravestoneOfferings/packageId/";
+    private string databaseServerSendFlowersURL = "http://3.144.16.89:8080/dynamoDB/doc/flowers/";
+    private string databaseServerSendCommentsURL = "http://3.144.16.89:8080/dynamoDB/doc/comments";
 
     private void Awake()
     {
