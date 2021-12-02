@@ -14,8 +14,8 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: DefaultCompany
   productName: RestInBankruptcy-Unity
-  defaultCursor: {fileID: 2800000, guid: f077f09cc55740a4dbe08ae4c3570b63, type: 3}
-  cursorHotspot: {x: 56, y: 56}
+  defaultCursor: {fileID: 2800000, guid: e0f38902f50aa174bbc94d6c994a240f, type: 3}
+  cursorHotspot: {x: 43, y: 43.5}
   m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
@@ -592,7 +592,7 @@ PlayerSettings:
   webGLDebugSymbols: 0
   webGLEmscriptenArgs: 
   webGLModulesDirectory: 
-  webGLTemplate: APPLICATION:Minimal
+  webGLTemplate: APPLICATION:Default
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
   webGLCompressionFormat: 2
