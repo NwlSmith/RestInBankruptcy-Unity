@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 public class ConstructEnvironment : MonoBehaviour
 {
-    private Vector2 _dimensions = new Vector2(20, 20);
+    private Vector2 _dimensions = new Vector2(13, 13);
 
     private const float tileSize = 4;
 
@@ -30,6 +30,7 @@ public class ConstructEnvironment : MonoBehaviour
         Debug.Log("Spawning shit");
 
         _parentGameObject = Instantiate(new GameObject("Environment Tile Holder"), Vector3.zero, Quaternion.identity);
+        int numGraves = 0;
 
         for (int x = 0; x < _dimensions.x; x++)
         {
@@ -42,15 +43,15 @@ public class ConstructEnvironment : MonoBehaviour
                 }
                 else if (x == _dimensions.x - 1 && y == 0)
                 {
-                    SpawnRotAdjustedTile(_cornerTile, location, 90f);
+                    SpawnRotAdjustedTile(_cornerTile, location, -90f);
                 }
                 else if (x == 0 && y == _dimensions.y - 1)
                 {
-                    SpawnRotAdjustedTile(_cornerTile, location, 180f);
+                    SpawnRotAdjustedTile(_cornerTile, location, -90f);
                 }
                 else if (x == _dimensions.x - 1 && y == _dimensions.y - 1)
                 {
-                    SpawnRotAdjustedTile(_cornerTile, location, 360f);
+                    SpawnRotAdjustedTile(_cornerTile, location, 180f);
                 }
                 else if (x == 0)
                 {
@@ -64,22 +65,29 @@ public class ConstructEnvironment : MonoBehaviour
                 {
                     SpawnRandomTile(_yEdgeTiles, location);
                 }
+                else if (y == _dimensions.y - 1 && x == 1 + (int)_dimensions.x / 2)
+                {
+                    SpawnRotAdjustedTile(_doorTile, location, 180);
+                }
                 else if (y == _dimensions.y - 1)
                 {
                     SpawnRandomRotAdjustedTile(_yEdgeTiles, location, 180);
                 }
                 // X walkway tiles
-                else if (x == 1 || x == _dimensions.x - 2 || x == _dimensions.x / 2)
+                else if (x == 1 || x == _dimensions.x - 2 || x == (int)_dimensions.x / 2)
                 {
                     SpawnRandomTile(_xWalkwayTiles, location);
                 }
                 // Y walkway tiles
-                else if (y == 1 || y == _dimensions.y - 2 || y == _dimensions.y / 2)
+                else if (y == 1 || y == _dimensions.y - 2 || y == (int)_dimensions.y / 2)
                 {
                     SpawnRandomTile(_yWalkwayTiles, location);
                 }
                 else
                 {
+                    SpawnRandomTile(_gravestoneTiles, location);
+                    numGraves++;
+                    /*
                     if (Random.Range(0, 5) == 0)
                     {
                         SpawnRandomScaleAndRotAdjustedTile(_treeTiles, location, Random.Range(0f, 360f), Random.Range(1f, 2f), Random.Range(1f, 2f));
@@ -87,10 +95,13 @@ public class ConstructEnvironment : MonoBehaviour
                     else
                     {
                         SpawnRandomTile(_gravestoneTiles, location);
-                    }
+                        numGraves++;
+                    }*/
                 }
             }
         }
+
+        Debug.Log($"num graves = {numGraves}");
     }
 
     private void SpawnRandomTile(GameObject[] tiles, Vector2 coordinates)
@@ -113,9 +124,9 @@ public class ConstructEnvironment : MonoBehaviour
         GameObject newGO = Instantiate(tileToSpawn);
         newGO.transform.parent = _parentGameObject.transform;
         Vector3 newPosition = new Vector3();
-        newPosition.x = coordinates.x * tileSize;
+        newPosition.x = (coordinates.x + 4) * tileSize;
         newPosition.y = 100f;
-        newPosition.z = coordinates.y * tileSize;
+        newPosition.z = (coordinates.y + 4) * tileSize;
 
         newGO.transform.position = newPosition;
 
@@ -143,9 +154,9 @@ public class ConstructEnvironment : MonoBehaviour
         GameObject newGO = Instantiate(tileToSpawn);
         newGO.transform.parent = _parentGameObject.transform;
         Vector3 newPosition = new Vector3();
-        newPosition.x = coordinates.x * tileSize;
+        newPosition.x = (coordinates.x + 4) * tileSize;
         newPosition.y = 100f;
-        newPosition.z = coordinates.y * tileSize;
+        newPosition.z = (coordinates.y + 4) * tileSize;
 
         newGO.transform.position = newPosition;
         newGO.transform.eulerAngles = Vector3.up * rotationAdjustment;
@@ -178,6 +189,18 @@ public class ConstructEnvironment : MonoBehaviour
         newPosition.x = coordinates.x * tileSize;
         newPosition.y = 100f;
         newPosition.z = coordinates.y * tileSize;
+        
+        float xAdjustment = 0;
+        float zAdjustment = 0;
+        
+        if (newGO.name.Contains("YEdgeTile"))
+        {
+            xAdjustment = 2;
+        }
+        else if (newGO.name.Contains("XEdgeTile"))
+        {
+            zAdjustment = 2;
+        }
 
         newGO.transform.position = newPosition;
 
@@ -185,6 +208,8 @@ public class ConstructEnvironment : MonoBehaviour
         {
             GameObject childGO = newGO.transform.GetChild(i).gameObject;
             Vector3 newChildPosition = childGO.transform.position;
+            newChildPosition.x += xAdjustment;
+            newChildPosition.z += zAdjustment;
             
             if (Physics.Raycast(newChildPosition, Vector3.down, out RaycastHit hit, 200f))
             {

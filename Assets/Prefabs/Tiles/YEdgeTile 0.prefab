@@ -130,8 +130,8 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
@@ -324,6 +324,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4665295556182420, guid: b6eaf37287e0ba54f8244585cfa91828, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 23300013181997188, guid: b6eaf37287e0ba54f8244585cfa91828, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 23300013181997188, guid: b6eaf37287e0ba54f8244585cfa91828, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

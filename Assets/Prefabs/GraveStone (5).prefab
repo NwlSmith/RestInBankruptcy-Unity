@@ -76,6 +76,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 304945299798198690, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_HighlightPrefab
+      value: 
+      objectReference: {fileID: 2049186020715227641, guid: 5857815bfa121924bb6cb85b2e30b471, type: 3}
     - target: {fileID: 867519917627850705, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -173,8 +177,24 @@ PrefabInstance:
       value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_fontSize
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_margin.w
       value: -0.27206463
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}

@@ -135,6 +135,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3289006078308285680}
     m_Modifications:
+    - target: {fileID: 3455846859134763860, guid: 3bb308f93b9e38245bdcc392ce035b15, type: 3}
+      propertyPath: m_fontSize
+      value: 2.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3455846859134763860, guid: 3bb308f93b9e38245bdcc392ce035b15, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3455846859134763860, guid: 3bb308f93b9e38245bdcc392ce035b15, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3455846859134763860, guid: 3bb308f93b9e38245bdcc392ce035b15, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4929987915150127490, guid: 3bb308f93b9e38245bdcc392ce035b15, type: 3}
       propertyPath: m_RootOrder
       value: 1

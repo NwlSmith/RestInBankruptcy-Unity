@@ -76,6 +76,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 304945299798198690, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_HighlightPrefab
+      value: 
+      objectReference: {fileID: 2049186020715227641, guid: 5857815bfa121924bb6cb85b2e30b471, type: 3}
     - target: {fileID: 867519917627850705, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -132,9 +136,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1251692705104169212, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1251692705104169212, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1633053096976576224, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_Name
       value: GraveStone (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1897419237629056513, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1897419237629056513, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2174105977102360355, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -180,11 +200,23 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.841
       objectReference: {fileID: 0}
+    - target: {fileID: 7137593674267576737, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7137593674267576737, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_text
       value: 'Tagline
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_fontSize
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_margin.w
@@ -197,6 +229,18 @@ PrefabInstance:
     - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
       propertyPath: m_margin.z
       value: 0.15215492
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7464007537278700807, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3efaaf7c7518a294197c0d64a8c4f5eb, type: 3}

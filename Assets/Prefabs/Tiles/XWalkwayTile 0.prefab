@@ -201,6 +201,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 23715501486681580, guid: 8e920ebf27477334fbeadd7f14ae4ed3, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 23715501486681580, guid: 8e920ebf27477334fbeadd7f14ae4ed3, type: 3}
       propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
@@ -280,6 +284,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4256190536080140, guid: 8e920ebf27477334fbeadd7f14ae4ed3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 23715501486681580, guid: 8e920ebf27477334fbeadd7f14ae4ed3, type: 3}
+      propertyPath: m_LightProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 23715501486681580, guid: 8e920ebf27477334fbeadd7f14ae4ed3, type: 3}
