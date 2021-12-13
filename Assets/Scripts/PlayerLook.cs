@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 /*
  * Date created: 10/26/2021
@@ -18,6 +19,7 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private float raycastRange = 2f;
     [FormerlySerializedAs("camera")] [SerializeField] private Transform playerCamera;
     [SerializeField] private GravestoneUIManager gravestoneUI;
+    [SerializeField] private Image crosshairs;
     
     [SerializeField] private float lerpDuration = 1f;
 
@@ -37,6 +39,8 @@ public class PlayerLook : MonoBehaviour
         {
             Debug.Log("Parent of " + name + " does not contain a Character Controller.");
         }
+
+        crosshairs.enabled = true;
     }
 
     void Update()
@@ -123,6 +127,8 @@ public class PlayerLook : MonoBehaviour
     {
         gravestoneUI.RequestGravestoneData(_currentlyHighlightedGravestone.GetInfo().ID, _currentlyHighlightedGravestone);
         
+        crosshairs.enabled = false;
+        
         InputManager.Instance.inputActive = false;
         _viewportCaptured = true;
         
@@ -166,6 +172,8 @@ public class PlayerLook : MonoBehaviour
     private IEnumerator LerpToPlayerCameraPosEnum()
     {
         gravestoneUI.Deactivate();
+        
+        crosshairs.enabled = true;
         
         float elapsedTime = 0f;
         float smoothTime = 0.3F;

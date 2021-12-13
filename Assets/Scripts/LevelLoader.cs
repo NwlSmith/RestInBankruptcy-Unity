@@ -107,7 +107,7 @@ public class LevelLoader : MonoBehaviour
         DontDestroyOnLoad(canvas);
 
         canvas.enabled = true;
-        startButton.enabled = false;
+        startButton.gameObject.SetActive(false);
         progressText.enabled = true;
         progressSlider.gameObject.SetActive(true);
         
@@ -187,6 +187,22 @@ public class LevelLoader : MonoBehaviour
 
         /* --- Cleanup --- */
 
+        progressSlider.gameObject.SetActive(false);
+        progressText.enabled = false;
+        startButton.gameObject.SetActive(false);
+
+        elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float fraction = Mathf.Lerp(1, 0, elapsedTime / duration);
+            overlay.color = new Color(0, 0, 0, fraction);
+            img.color = new Color(1, 1, 1, fraction);
+            yield return null;
+        }
+        overlay.color = new Color(0, 0, 0, 0);
+        img.color = new Color(1, 1, 1, 0);
+        
         for (int i = 0; i < canvas.transform.childCount; i++)
         {
             GameObject uiElement = canvas.transform.GetChild(i).gameObject;
@@ -196,17 +212,9 @@ public class LevelLoader : MonoBehaviour
             }
         }
         
-        elapsedTime = 0f;
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            overlay.color = new Color(0, 0, 0, Mathf.Lerp(1, 0, elapsedTime / duration));
-            yield return null;
-        }
-        overlay.color = new Color(0, 0, 0, 0);
-        
         canvas.enabled = false;
         overlay.enabled = false;
+        img.enabled = false;
         Destroy(gameObject);
         InputManager.Instance.inputActive = true;
     }

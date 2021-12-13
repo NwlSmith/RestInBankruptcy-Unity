@@ -78737,7 +78737,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New York
+  m_text: Explore
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d40a5c133c2c3814aa25c971ae5b5cd3, type: 2}
   m_sharedMaterial: {fileID: -5460548694176128668, guid: d40a5c133c2c3814aa25c971ae5b5cd3, type: 2}
@@ -78764,7 +78764,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32.15
+  m_fontSize: 35.8
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
