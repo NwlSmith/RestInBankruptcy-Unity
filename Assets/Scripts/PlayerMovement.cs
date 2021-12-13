@@ -154,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator VolumeUpCO()
     {
-        Debug.Log("VolumeUpCO Started");
+        //Debug.Log("VolumeUpCO Started");
         _audioSourceIsPlaying = true;
         _volumeUpPlaying = true;
 
@@ -175,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator VolumeDownCO()
     {
-        Debug.Log("VolumeDownCO Started");
+        //Debug.Log("VolumeDownCO Started");
         _volumeDownPlaying = true;
 
         float elapsedTime = 0f;

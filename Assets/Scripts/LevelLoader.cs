@@ -52,6 +52,7 @@ public class LevelLoader : MonoBehaviour
 
     private IEnumerator FadeInCO()
     {
+        img.color = new Color (1,1,1,0);
         float duration = 1f;
         float elapsedTime = 0f;
         while (elapsedTime < duration)
@@ -93,10 +94,13 @@ public class LevelLoader : MonoBehaviour
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            overlay.color = new Color(0, 0, 0, Mathf.Lerp(0, 1, elapsedTime / duration));
+            float newVal = Mathf.Lerp(0, 1, elapsedTime / duration);
+            overlay.color = new Color(0, 0, 0, newVal);
+            img.color = new Color (1, 1, 1, newVal);
             yield return null;
         }
         overlay.color = new Color(0, 0, 0, 1);
+        img.color = new Color (1, 1, 1, 1);
 
         /* --- Startup --- */
         DontDestroyOnLoad(this);
